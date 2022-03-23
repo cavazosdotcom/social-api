@@ -77,6 +77,17 @@ thoughtSchema.virtual('reactionCount')
 // Using mongoose.model() to compile a model based on the schema
 const Thought = model('Thought', thoughtSchema);
 
+// Thought.create(
+//     { thoughtText: 'dfsafasdfasdfeasdf sdfesafdf dsf esaf d feasdf efa sd f', username: 'tina' },
+//   (err, data) => {
+//     if (err) {
+//       console.error(err);
+//     }
+//     console.log(data);
+//   }
+// );
+
+
 // Error handler function to be called when an error occurs when trying to save a document
 const handleError = (err) => console.error(err);
 

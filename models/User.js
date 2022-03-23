@@ -53,15 +53,15 @@ userSchema.virtual('friendCount')
 const User = model('User', userSchema);
 
 
-User.create(
-    { username: 'newUser', email: 'fake@hotmail.com' },
-  (err, data) => {
-    if (err) {
-      console.error(err);
-    }
-    console.log(data);
-  }
-);
+// User.create(
+//     { username: 'newUser', email: 'fake@hotmail.com' },
+//   (err, data) => {
+//     if (err) {
+//       console.error(err);
+//     }
+//     console.log(data);
+//   }
+// );
 
 
 
