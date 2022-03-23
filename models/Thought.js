@@ -8,7 +8,7 @@ const dateFormat = (date) => {
 };
 
 // Create a new instance of the Mongoose schema to define shape of each document
-const reactionSchema = new mongoose.Schema(
+const reactionSchema = new Schema(
     {
         reactionId: {
             type: Schema.Types.ObjectId,
@@ -41,7 +41,7 @@ const reactionSchema = new mongoose.Schema(
 );
 
 // Create a new instance of the Mongoose schema to define shape of each document
-const thoughtSchema = new mongoose.Schema(
+const thoughtSchema = new Schema(
     {
         thoughtText : {
             type: String,
@@ -75,7 +75,7 @@ thoughtSchema.virtual('reactionCount')
     }); 
 
 // Using mongoose.model() to compile a model based on the schema
-const Thought = mongoose.model('Thought', thoughtSchema);
+const Thought = model('Thought', thoughtSchema);
 
 // Error handler function to be called when an error occurs when trying to save a document
 const handleError = (err) => console.error(err);
