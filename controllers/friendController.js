@@ -4,7 +4,7 @@ const { User, Thought } = require('../models');
 module.exports = {
     addFriend(req, res) {
         console.log('You are adding a friend');
-        // console.log(req.body);
+        // find the user to update by their id, add the friendId from the url's query parameter to the friends array property for the found user
         User.findOneAndUpdate(
           { _id: req.params.userId },
           { $addToSet: { friends: req.params.friendId } },
@@ -21,6 +21,7 @@ module.exports = {
     },
     removeFriend(req, res) {
         console.log('You are removing a friend');
+        // find the user to delete by their id, from the users friends property, pull the friendId from the query parameter
         User.findOneAndUpdate(
           { _id: req.params.userId },
           { $pull: { friends: req.params.friendId } },

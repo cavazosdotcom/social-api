@@ -2,36 +2,36 @@ const { User, Thought } = require('../models');
 
 // TODO: Add reaction and delete reaction, refactor
 module.exports = {
-    addFriend(req, res) {
-        console.log('You are adding a friend');
-        // console.log(req.body);
-        User.findOneAndUpdate(
-          { _id: req.params.userId },
-          { $addToSet: { friends: req.params.friendId } },
+    addReaction(req, res) {
+        // Thought.create(req.body)
+        // console.log(req.body)
+        // find thought by its id, push the request body into that thought's reactions property
+        Thought.findOneAndUpdate(
+            { _id: req.params.thoughtId },
+            { $push: { reactions: req.body } },
+            { runValidators: true, new: true }
+        )
+        .then((thought) =>
+        !thought
+        ? res.status(404).json({ message: 'No thought with this id!' })
+        : res.json({message: `Added reaction to thought`})
+        )
+      .catch((err) => res.status(500).json(err));
+  },
+    removeReaction(req, res) {
+        console.log('You are removing a reaction');
+        // find thought by its id, from that thought's reactions array, pull the reactionId and it's body feom reactions
+        Thought.findOneAndUpdate(
+          { _id: req.params.thoughtId },
+          { $pull: { reactions: {reactionId: req.body.reactionId } } },
           { runValidators: true, new: true }
         )
-          .then((user) =>
-            !user
+          .then((thought) =>
+            !thought
               ? res
                   .status(404)
-                  .json({ message: 'No user found with that ID :(' })
-              : res.json(user)
-          )
-          .catch((err) => res.status(500).json(err));
-    },
-    removeFriend(req, res) {
-        console.log('You are removing a friend');
-        User.findOneAndUpdate(
-          { _id: req.params.userId },
-          { $pull: { friends: req.params.friendId } },
-          { runValidators: true, new: true }
-        )
-          .then((user) =>
-            !user
-              ? res
-                  .status(404)
-                  .json({ message: 'No user found with that ID' })
-              : res.json(user)
+                  .json({ message: 'No thought found with that ID' })
+              : res.json(thought)
           )
           .catch((err) => res.status(500).json(err));
     },

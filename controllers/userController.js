@@ -1,12 +1,13 @@
 const { User, Thought } = require('../models');
 
 module.exports = {
-
+    // from User model, find all and return as json data 
     getUsers(req, res) {
         User.find()
             .then((users) => res.json(users))
             .catch((err) => res.status(500).json(err));
     },    
+    // find user by userId, return as json data
     getSingleUser(req, res) {
         User.findOne({ _id: req.params.userId })
           .select('-__v')
@@ -17,6 +18,7 @@ module.exports = {
           )
           .catch((err) => res.status(500).json(err));
     },
+    // create user based on req.body
     createUser(req, res) {
         User.create(req.body)
           .then((user) => res.json(user))
@@ -25,6 +27,7 @@ module.exports = {
             return res.status(500).json(err);
           });
     },
+    // find user by userId, set the new req.body as the data
     updateUser(req, res) {
         User.findOneAndUpdate(
           { _id: req.params.userId },
@@ -38,6 +41,7 @@ module.exports = {
           )
           .catch((err) => res.status(500).json(err));
     },
+    // find user by id and delete, if user is found and deleted, then also delete many thoughts that are in the users thoughts property
     deleteUser(req, res) {
         User.findOneAndDelete({ _id: req.params.userId })
           .then((user) =>

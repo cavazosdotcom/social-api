@@ -1,5 +1,4 @@
-// Define Mongoose
-// const mongoose = require('mongoose');
+// requires for mongoose
 const { Schema, Types, model } = require("mongoose");
 
 // date format getter
@@ -7,23 +6,27 @@ const dateFormat = (date) => {
     return date.toLocaleString()
 };
 
-// Create a new instance of the Mongoose schema to define shape of each document
+// Create a new reactions subschema for thoughts 
 const reactionSchema = new Schema(
     {
+        // id for each reaction
         reactionId: {
             type: Schema.Types.ObjectId,
             // sets the default value to a new ObjectId
             default: () => new Types.ObjectId(),
         },
+        // main content for each reaction
         reactionBody: {
             type: String,
             required: true,
             maxlength: 280,
         },
+        // username for reaction user
         username: {
             type: String,
             required: true,
         },
+        // using dateFormat getter to set date of reaction
         createdAt: {
             type: Date,
             default: Date.now,
@@ -40,35 +43,42 @@ const reactionSchema = new Schema(
     }   
 );
 
-// Create a new instance of the Mongoose schema to define shape of each document
+// Create a new instance of thoughtSchema
 const thoughtSchema = new Schema(
     {
+        // main thought content
         thoughtText : {
             type: String,
             required: true,
             minlength: 1,
             maxlength: 280,
         },
+        // using dateFormat getter to set date of reaction
         createdAt: {
             type: Date,
             default: Date.now,
             // getter calling the dateFormat function above
             get: dateFormat,
         },
+        // username for thought user
         username: {
             type: String,
             required: true,
         },
+        // array to store reactions in thoughts
         reactions: [ reactionSchema ]
     },
     {
         toJSON: {
+            // allows below virtual
             virtuals: true,
+            // allows getter functions
             getters: true,
         }
     }
 );
 
+// virtual to track count of reactions in each thought
 thoughtSchema.virtual('reactionCount')
     .get(function () {
         return this.reactions.length;

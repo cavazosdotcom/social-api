@@ -1,21 +1,21 @@
-// Define Mongoose
-// const mongoose = require('mongoose');
-// const Schema = mongoose.Schema;
-
+// requires for mongoose
 const { Schema, Types, model } = require("mongoose");
-// Create a new instance of the Mongoose schema to define shape of each document
+// Create a new instance of userSchema
 const userSchema = new Schema(
     {
+        // user's username
         username: {
             type: String,
             unique: true,
             required: true,
             trim: true,
         },
+        // user's email
         email: {
             type: String,
             required: true,
             unique: true,
+            // validates the users email address is an email
             validate: {
                 validator: function (valid) {
                   return /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/.test(valid);
@@ -23,12 +23,14 @@ const userSchema = new Schema(
                 message: (props) => `${props.value} is not a valid email address!`,
               },
         },
+        // array to store user's thoughts
         thoughts: [
             {
                 type: Schema.Types.ObjectId,
                 ref: 'Thought'
             },
         ],
+        // array to store user's friends
         friends: [
             {
                 type: Schema.Types.ObjectId,
@@ -44,6 +46,7 @@ const userSchema = new Schema(
     }   
 );
 
+// virtual for userSchema to return the count of the users total amount of friends
 userSchema.virtual('friendCount')
     .get(function () {
         return this.friends.length;
